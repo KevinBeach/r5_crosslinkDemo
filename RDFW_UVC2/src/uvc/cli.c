@@ -19,6 +19,7 @@
 #include "lsc_reg_access.h"   // lsc_32_write(), lsc_32_read()
 #include "sys_platform.h"     // provides AHBL_TO_AXI_LITE_BRIDGE_BASE_ADDR
 #include "version_info.h"
+#include "gamma.h"
 
 static char line_buf[CLI_MAX_LINE];
 static uint8_t line_len = 0;
@@ -107,6 +108,28 @@ void process_command(const char *cmd)
         return;
     }
 
+    /* -----------------Gamma Select -------------- */
+    if (cmd[0] == 'G'){
+    	char tmp_arg[3];
+    	uint8_t gamma_sel;
+    	if (sscanf(cmd, "G %3s", tmp_arg) == 1){
+    		gamma_sel = strtoul(tmp_arg, NULL, 10);
+    		 uint8_t status = gamma_load(gamma_sel);
+
+    		        if (status == 0U)
+    		        {
+    		        	if (cli_verbose)
+    		        		printf(" \r\n Gamma curve %i loaded successfully",gamma_sel);
+    		        }
+    		        else
+    		        {
+    		        	if (cli_verbose)
+    		        		printf(" \r\n ERROR : Gamma curve %i not loaded correctly",gamma_sel);
+    		        }
+
+    	}
+    	return;
+    }
     /* ------------------- HELP ------------------- */
     if ((strcmp(cmd, "HELP") == 0) || (strcmp(cmd, "help")) == 0 || (strcmp(cmd, "H") == 0) ||  (strcmp(cmd, "h") == 0) ) {
         if (cli_verbose) {
@@ -123,6 +146,7 @@ void process_command(const char *cmd)
             printf("  C W <offset> <i>  - Write CCM coefficient (-99..99)\r\n");
             printf("  C U                      - Update and enable new CCM configuration");
             printf("    addr = base + (offset << 2)\r\n");
+            printf("  G <int> Select gamma curve version");
         }
         return;
     }
@@ -193,6 +217,7 @@ void process_command(const char *cmd)
             offset = strtoul(tmp_off,  NULL, 16);
             data   = strtoul(tmp_data, NULL, 16);
             addr   = base + ((uint32_t)offset << 2);
+
 
             lsc_32_write(addr, data);
 

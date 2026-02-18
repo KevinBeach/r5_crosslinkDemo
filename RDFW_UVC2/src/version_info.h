@@ -8,9 +8,9 @@
 #ifndef VERSION_INFO_H_
 #define VERSION_INFO_H_
 
-#define VERSION_NO "1.2.0"
+#define VERSION_NO "1.2.1"
 #define VERSION_RESOLUTION "1920 x 1080"
-#define VERSION_INFO "R4 code (UVC rev B) with terminal access to CCM and Sensor registers"
-#define VERSION_GITHUB "Not yet pushed"
+#define VERSION_INFO "Added Gamma works with firmware R5, console gamma curve loading"
+#define VERSION_GITHUB "https://github.com/KevinBeach/r5_crosslinkDemo"
 
 #endif /* VERSION_INFO_H_ */
